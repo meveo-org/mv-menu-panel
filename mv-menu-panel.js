@@ -6,6 +6,7 @@ export class MvMenuPanel extends LitElement {
       // optional, this is the value that is returned when menu items are clicked
       value: { type: Object, attribute: false },
       menu: { type: Boolean, attribute: true },
+      showLabel: { type: Boolean, attribute: true },
       label: { type: Boolean, attribute: true },
       group: { type: Boolean, attribute: true },
       item: { type: Boolean, attribute: true },
@@ -24,16 +25,53 @@ export class MvMenuPanel extends LitElement {
   static get styles() {
     return css`
 			:host {
-				font-family: var(--font-family, Arial);
+        font-family: var(--font-family, Arial);
+        user-select: none;
       }
 
-      @keyframes slide-in {
-        0% {          
-          opacity: 0;
-        }
-        100% {
-          opacity: 1;
-        }
+      :host([group]:hover:not([disabled])), :host([item]:hover:not([disabled])) {        
+        cursor: pointer;
+      }
+
+      ul {
+        padding: 0;
+        margin: 0;
+      }
+
+      li {
+        display: block;
+        text-indent: 20px;
+      }
+
+      li, li ::slotted(*) {
+        margin: 0;
+        text-decoration: none;
+        list-style-type: none;
+        color: #FFFFFF;
+        line-height: 40px;
+      }
+
+      li ::slotted(a) {
+        display: block;
+      }
+
+      li:hover:not(.disabled), li.open:not(.disabled) {
+        color: #00D8FF;
+        background-color: rgba(26, 30, 35, 0.4);
+      }
+
+      li:hover:not(.disabled) ::slotted(*) {        
+        color: #00D8FF;
+      }
+
+      li.selected, li.selected ::slotted(*) {
+        color: #00D8FF;
+        background-color: rgba(26, 30, 35, 0.6);
+      }
+
+      li.disabled, li.disabled ::slotted(*) {
+        color: #898C91;
+        cursor: not-allowed;
       }
 
       .mv-menu-panel {
@@ -47,7 +85,7 @@ export class MvMenuPanel extends LitElement {
         box-shadow: 0 0 16px 1px rgba(151, 156, 163, 0.35)
       }
 
-      .menu-panel-header {
+      .menu-panel-header {        
         font-size: 25px;
         color: #FFFFFF;
         background: linear-gradient(45deg, rgba(232, 179, 56, 1) 0%, rgba(255, 150, 0, 1) 100%);
@@ -57,25 +95,6 @@ export class MvMenuPanel extends LitElement {
         padding: 0 0 0 20px;
       }
 
-      ul {
-        display: flex;
-        flex-direction: column;
-        padding-left: 0;
-        margin: 0 0 0 20px;
-        animation: slide-in 1s slide-in;
-      }
-
-      li {
-        list-style-type: none;        
-        color: #FFFFFF;
-        margin: 10px 0;
-      }
-
-      li ::slotted(a){
-        text-decoration: none;
-        color: #FFFFFF;
-      }
-
       .menu-label-group {
         width: calc(100% - 20px);
         display: flex;
@@ -83,54 +102,86 @@ export class MvMenuPanel extends LitElement {
         justify-content: space-between;
       }
 
+      .menu-label-group:hover:not(.disabled) ::slotted(*),
+      .menu-label-group.open:not(.disabled) ::slotted(*),
+      .menu-label-group:hover:not(.disabled) i,
+      .menu-label-group.open:not(.disabled) i {
+        color: #00D8FF;        
+      }
+
       .menu-panel-label {
         width: 100%;
-        line-height: 30px;
-      }
-
-      .menu-panel-label:hover, .item ::slotted(a:hover), .item:hover {
-        color: #00D8FF;
-        cursor: pointer;
-      }
-
-      .menu-group-dropdown-icon {
-        font-size: 20px;
-        font-style: normal;
         line-height: 20px;
       }
 
-      .menu-group-dropdown-icon:before {
-        display: inline-block;
-        content: "\\02039";
-        transform: rotate(90deg);
+      .menu-group-dropdown-icon {
+        position: relative;
+        width: 5px;
+        height: 5px;
+        border-top: 2px solid #DCDCDC;
+        border-right: 2px solid #DCDCDC;
+        float: right;        
+      }
+
+      .menu-group-dropdown-icon.close {
+        transition: -webkit-transform 0.3s;
+        transition: transform 0.3s;
+        transition: transform 0.3s, -webkit-transform 0.3s;        
+        -webkit-transform: rotate(45deg);
+        transform: rotate(45deg);
       }
 
       .menu-group-dropdown-icon.open {
-        position: relative;
-        left: -4px;
-        transform: rotate(180deg);
+        transition: -webkit-transform 0.3s;
+        transition: transform 0.3s;
+        transition: transform 0.3s, -webkit-transform 0.3s;        
+        -webkit-transform: rotate(135deg);
+        transform: rotate(135deg);
       }
+      
 		`;
   }
 
   constructor() {
     super();
+    this.showLabel = false;
     this.disabled = false;
     this.selected = false;
     this.custom = false;
   }
 
   render() {
-    const { menu, label, group, item, open, custom } = this;
+    const {
+      menu,
+      showLabel,
+      label,
+      group,
+      item,
+      open,
+      disabled,
+      selected,
+      custom
+    } = this;
+    const openClass = open ? " open" : " close";
+    const disabledClass = disabled ? " disabled" : "";
+    const selectedClass = selected ? " selected" : "";
+    const itemClass = `${disabledClass || selectedClass}`;
     if (menu) {
       return open
         ? html`
           <aside class="mv-menu-panel">
-            <div class="menu-panel-header">
-              <slot name="menu-panel-label"></slot>
-            </div>
-            <nav class="menu-panel-nav">
-              <ul>
+            ${!!showLabel
+              ? html`
+                <div
+                  class="menu-panel-header"
+                  @click="${this.handleHeaderClick}"
+                >
+                  <slot name="menu-panel-label"></slot>
+                </div>
+                `
+              : html``}            
+            <nav>
+              <ul class="main">
                 <slot></slot>
               </ul>
             </nav>
@@ -144,32 +195,35 @@ export class MvMenuPanel extends LitElement {
       `;
     } else if (group) {
       return html`
-        <li class="group" @click="${this.handleOpenMenu}">
-          <div class="menu-label-group">
-            <div class="menu-panel-label">
-              <slot name="menu-panel-label"></slot>
-            </div>
-            ${!custom
-              ? html`<i class="${`menu-group-dropdown-icon${open
-                  ? " open"
-                  : ""}`}"></i>`
-              : html``}
-          </div>
-          ${open
-            ? html`
-              <div class="menu-panel-group">
-                <ul>
-                  <slot></slot>
-                </ul>
+        <li
+          class="${openClass}${itemClass}"
+          @click="${this.handleOpenMenu}"
+        >
+          <div class="sub-menu${openClass}">
+            <div class="menu-label-group${openClass}">
+              <div class="menu-panel-label">
+                <slot name="menu-panel-label"></slot>
               </div>
-              `
-            : html``}          
+              ${!custom
+                ? html`<i class="${`menu-group-dropdown-icon${openClass}`}"></i>`
+                : html``}
+            </div>
+            ${open
+              ? html`
+                  <ul>
+                    <slot></slot>
+                  </ul>
+                `
+              : html``}
+            </div>
         </li>
       `;
     } else if (item) {
       return html`
-      <li class="item" @click="${this.handleItemClick}">
-        <slot></slot>
+      <li class="${itemClass}" @click="${this.handleItemClick}">
+        <div>
+          <slot></slot>
+        </div>
       </li>
       `;
     }
@@ -184,6 +238,13 @@ export class MvMenuPanel extends LitElement {
     super.connectedCallback();
   }
 
+  handleHeaderClick(originalEvent) {
+    const { value } = this;
+    this.dispatchEvent(
+      new CustomEvent("select-header", { detail: { value, originalEvent } })
+    );
+  }
+
   handleOpenMenu(originalEvent) {
     const { custom, open, value } = this;
     if (!custom) {
@@ -196,8 +257,8 @@ export class MvMenuPanel extends LitElement {
   }
 
   handleItemClick(originalEvent) {
-    const { value } = this;
-    if (!!value) {
+    const { value, disabled } = this;
+    if (!!value && !disabled) {
       this.dispatchEvent(
         new CustomEvent("select-item", { detail: { value, originalEvent } })
       );

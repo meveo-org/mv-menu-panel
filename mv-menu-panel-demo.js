@@ -15,7 +15,8 @@ export class MvMenuPanelDemo extends LitElement {
     return {
       open: { type: Boolean, reflect: true },
       title: { type: String, reflect: true },
-      position: { type: String, reflect: true, attribute: false }
+      position: { type: String, reflect: true, attribute: false },
+      selected: { type: String, reflect: true, attribute: false }
     };
   }
 
@@ -26,9 +27,18 @@ export class MvMenuPanelDemo extends LitElement {
         font-size: var(--font-size-m, 10pt);
       }
 
-      .demo-content.right{
+      mv-menu-panel[menu] > mv-menu-panel[label] {
         width: 100%;
-        margin: 0 0 0 330px;
+        display: block;
+        cursor: pointer;
+      }
+
+      .demo-content.right{
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        margin: 0 0 0 350px;
       }
 
       .demo-content.left{
@@ -52,59 +62,132 @@ export class MvMenuPanelDemo extends LitElement {
     this.contentPosition = CONTENT_POSITION[this.position];
     this.testValue = { value: "This can be any value" };
     this.title = "";
+    this.selected = "";
   }
 
   render() {
     const { position, contentPosition } = this;
     const contentClass = `demo-content ${contentPosition}`;
     return html`
-    <mv-menu-panel menu .position="${position}">
+    <mv-menu-panel
+      menu
+      showLabel
+      .position="${position}"
+      .value="${{ value: "This value is for the header." }}"
+      @select-header="${this.handleHeaderClick}"
+    >
       <mv-menu-panel label><mv-linear-icon icon="home"></mv-linear-icon> Menu</mv-menu-panel>
-      <mv-menu-panel        
-        ?open="${this.open}"
-        @select-group="${this.handleOpenCustomMenu}"
-        .value="${{
-          value: "This is any value passed to the action when menu is clicked"
-        }}"
+
+      <mv-menu-panel
         group
-        custom
+        .value="${{ value: "This value is for Menu 1" }}"
+        @select-group="${this.handleGroupSelect}"
       >
-        <mv-menu-panel label class="custom-group-label">
-          <span>
-            <mv-linear-icon icon="star"></mv-linear-icon> Custom Menu
-          </span>
-          ${this.open
-            ? html`<mv-linear-icon icon="chevron-up"></mv-linear-icon>`
-            : html`<mv-linear-icon icon="chevron-down"></mv-linear-icon>`}          
+        <mv-menu-panel label><mv-linear-icon icon="user"></mv-linear-icon> Menu 1</mv-menu-panel>
+
+        <mv-menu-panel
+          item
+          .value="${{ name: "menu 1.1", value: "This value is for Menu 1.1" }}"
+          .selected="${this.selected === "menu 1.1"}"
+          @select-item="${this.handleItemClick}"
+        >
+          Menu 1.1
         </mv-menu-panel>
-        <mv-menu-panel item>Menu 1.1</mv-menu-panel>
-        <mv-menu-panel item>Menu 1.2</mv-menu-panel>
-        <mv-menu-panel item>
+
+        <mv-menu-panel
+          item
+          .value="${{ name: "menu 1.2", value: "This value is for Menu 1.2" }}"
+          .selected="${this.selected === "menu 1.2"}"
+          @select-item="${this.handleItemClick}"
+        >
+          Menu 1.2
+        </mv-menu-panel>
+
+        <mv-menu-panel        
+          group
+          custom
+          ?open="${this.open}"
+          .value="${{ value: "This value is for the Custom Menu." }}"
+          @select-group="${this.handleCustomMenu}"
+        >
+          <mv-menu-panel label class="custom-group-label">
+            <span>
+              <mv-linear-icon icon="star"></mv-linear-icon> Custom Menu
+            </span>
+            ${this.open
+              ? html`<mv-linear-icon icon="chevron-up"></mv-linear-icon>`
+              : html`<mv-linear-icon icon="chevron-down"></mv-linear-icon>`}          
+          </mv-menu-panel>
+          
+          <mv-menu-panel
+            item
+            .value="${{
+              name: "menu 1.3.1",
+              value: "This value is for Menu 1.3.1"
+            }}"
+            .selected="${this.selected === "menu 1.3.1"}"
+            @select-item="${this.handleItemClick}"
+          >
+            Menu 1.3.1
+          </mv-menu-panel>
+          
           <mv-menu-panel group>
-            <mv-menu-panel label>Menu 1.3</mv-menu-panel>
-            <mv-menu-panel item>Menu 1.3.1</mv-menu-panel>
-            <mv-menu-panel item>
-              <mv-menu-panel group>
-                <mv-menu-panel label>Menu 1.3.2</mv-menu-panel>
-                <mv-menu-panel item>Menu 1.3.2.1</mv-menu-panel>
-                <mv-menu-panel item>Menu 1.3.2.2</mv-menu-panel>
-                <mv-menu-panel item>Menu 1.3.2.3</mv-menu-panel>
-              </mv-menu-panel>
+            <mv-menu-panel label>Menu 1.3.2</mv-menu-panel>
+            
+            <mv-menu-panel
+              item
+              .value="${{
+                name: "menu 1.3.2.1",
+                value: "This value is for Menu 1.3.2.1"
+              }}"
+              .selected="${this.selected === "menu 1.3.2.1"}"
+              @select-item="${this.handleItemClick}"
+            >
+              Menu 1.3.2.1
+            </mv-menu-panel>
+            
+            <mv-menu-panel
+              item
+              .value="${{
+                name: "menu 1.3.2.2",
+                value: "This value is for Menu 1.3.2.2"
+              }}"
+              .selected="${this.selected === "menu 1.3.2.2"}"
+              @select-item="${this.handleItemClick}"
+            >
+              Menu 1.3.2.2
+            </mv-menu-panel>
+            
+            <mv-menu-panel
+              item
+              .value="${{
+                name: "menu 1.3.2.3",
+                value: "This value is for Menu 1.3.2.3"
+              }}"
+              .selected="${this.selected === "menu 1.3.2.3"}"
+              @select-item="${this.handleItemClick}"
+            >
+              Menu 1.3.2.3
             </mv-menu-panel>
           </mv-menu-panel>
         </mv-menu-panel>
       </mv-menu-panel>
       <mv-menu-panel
-        @select-item="${this.handleLink}"
+        item
         .value="${{
           value: "Any value to be passed to an action",
           href: "https://github.com/meveo-frontend"
         }}"
-        item
+        .selected="${this.selected === "link"}"
+        @select-item="${this.handleLink}"
       >
-        <a href="https://github.com/meveo-frontend" target="_blank">mv-frontend</a>
+        <a href="https://github.com/meveo-frontend" target="_blank">
+          <mv-linear-icon icon="paperclip"></mv-linear-icon> Menu 2 - Link
+        </a>
       </mv-menu-panel>
-      <mv-menu-panel item>Menu 3</mv-menu-panel>
+      <mv-menu-panel item disabled>
+        <mv-linear-icon icon="book"></mv-linear-icon> Menu 3 - Disabled
+      </mv-menu-panel>
     </mv-menu-panel>
     <div class="${contentClass}">
       <h1>Menu Panel Demo</h1>
@@ -122,18 +205,39 @@ export class MvMenuPanelDemo extends LitElement {
     }
   }
 
-  handleOpenCustomMenu(event) {
+  handleHeaderClick(event) {
+    const { detail: { value } } = event;
+    this.title = "handleHeaderClick()";
+    this.message = JSON.stringify(value, null, 2);
+  }
+
+  handleGroupSelect(event) {
+    const { detail: { value } } = event;
+    this.title = "handleGroupSelect()";
+    this.message = JSON.stringify(value, null, 2);
+  }
+
+  handleCustomMenu(event) {
     const { detail: { value, originalEvent } } = event;
     originalEvent.stopPropagation();
     this.open = !this.open;
-    this.title = "handleOpenCustomMenu()";
+    this.title = "handleCustomMenu()";
     this.message = JSON.stringify(value, null, 2);
   }
 
   handleLink(event) {
     const { detail: { value, originalEvent } } = event;
     originalEvent.stopPropagation();
+    this.selected = "link";
     this.title = "handleLink()";
+    this.message = JSON.stringify(value, null, 2);
+  }
+
+  handleItemClick(event) {
+    const { detail: { value, originalEvent } } = event;
+    originalEvent.stopPropagation();
+    this.selected = value.name;
+    this.title = "handleItemClick()";
     this.message = JSON.stringify(value, null, 2);
   }
 }
