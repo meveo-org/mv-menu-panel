@@ -1,5 +1,5 @@
 import { LitElement, html, css } from "lit-element";
-import "mv-linear-icon";
+import "mv-linear-icons";
 import "mv-toast";
 import "./mv-menu-panel.js";
 
@@ -76,14 +76,14 @@ export class MvMenuPanelDemo extends LitElement {
       .value="${{ value: "This value is for the header." }}"
       @select-header="${this.handleHeaderClick}"
     >
-      <mv-menu-panel label><mv-linear-icon icon="home"></mv-linear-icon> Menu</mv-menu-panel>
+      <mv-menu-panel label><mv-lnr icon="home"></mv-lnr> Menu</mv-menu-panel>
 
       <mv-menu-panel
         group
         .value="${{ value: "This value is for Menu 1" }}"
         @select-group="${this.handleGroupSelect}"
       >
-        <mv-menu-panel label><mv-linear-icon icon="user"></mv-linear-icon> Menu 1</mv-menu-panel>
+        <mv-menu-panel label><mv-lnr icon="user"></mv-lnr> Menu 1</mv-menu-panel>
 
         <mv-menu-panel
           item
@@ -112,11 +112,11 @@ export class MvMenuPanelDemo extends LitElement {
         >
           <mv-menu-panel label class="custom-group-label">
             <span>
-              <mv-linear-icon icon="star"></mv-linear-icon> Custom Menu
+              <mv-lnr icon="star"></mv-lnr> Custom Menu
             </span>
             ${this.open
-              ? html`<mv-linear-icon icon="chevron-up"></mv-linear-icon>`
-              : html`<mv-linear-icon icon="chevron-down"></mv-linear-icon>`}          
+              ? html`<mv-lnr icon="chevron-up"></mv-lnr>`
+              : html`<mv-lnr icon="chevron-down"></mv-lnr>`}          
           </mv-menu-panel>
           
           <mv-menu-panel
@@ -182,11 +182,11 @@ export class MvMenuPanelDemo extends LitElement {
         @select-item="${this.handleLink}"
       >
         <a href="https://github.com/meveo-frontend" target="_blank">
-          <mv-linear-icon icon="paperclip"></mv-linear-icon> Menu 2 - Link
+          <mv-lnr icon="paperclip"></mv-lnr> Menu 2 - Link
         </a>
       </mv-menu-panel>
       <mv-menu-panel item disabled>
-        <mv-linear-icon icon="book"></mv-linear-icon> Menu 3 - Disabled
+        <mv-lnr icon="book"></mv-lnr> Menu 3 - Disabled
       </mv-menu-panel>
     </mv-menu-panel>
     <div class="${contentClass}">
