@@ -25,6 +25,9 @@ export class MvMenuPanelDemo extends LitElement {
       :host {
         font-family: var(--font-family, Arial);
         font-size: var(--font-size-m, 10pt);
+        --mv-menu-panel-width: 280px;
+        --content-margin: calc(20px + var(--mv-menu-panel-width));
+        --content-width: calc(100% - var(--content-margin));
       }
 
       mv-menu-panel[menu] > mv-menu-panel[label] {
@@ -37,13 +40,13 @@ export class MvMenuPanelDemo extends LitElement {
         position: absolute;
         top: 0;
         left: 0;
-        width: 100%;
-        margin: 0 0 0 350px;
+        width: var(--content-width);
+        margin: 0 0 0 var(--content-margin);
       }
 
       .demo-content.left{
-        width: 100%;
-        margin: 0 330px 0 0;
+        width: var(--content-width);
+        margin: 0 var(--content-margin) 0 0;
       }
 
       .custom-group-label{

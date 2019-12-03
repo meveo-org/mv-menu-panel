@@ -17,7 +17,7 @@ export class MvMenuPanel extends LitElement {
       //setting custom to true will bypass the default render and behavior of the group label and click action
       custom: { type: Boolean, reflect: true, attribute: true },
 
-      // position values include: "top", "left", "right", "bottom", default: "left"
+      // TODO position values include: "top", "left", "right", "bottom", default: "left"
       position: { type: String, attribute: true }
     };
   }
@@ -27,6 +27,22 @@ export class MvMenuPanel extends LitElement {
 			:host {
         font-family: var(--font-family, Arial);
         user-select: none;
+        --menu-width: var(--mv-menu-panel-width, 330px);
+        --menu-header-font-size: var(--mv-menu-panel-header-font-size, 24px);
+        --menu-header-height: var(--mv-menu-panel-header-height, 66px);
+        --menu-header-color: var(--mv-menu-panel-header-color, #FFFFFF);
+        --menu-header-background: var(--mv-menu-panel-header-background, linear-gradient(45deg, rgba(232, 179, 56, 1) 0%, rgba(255, 150, 0, 1) 100%));
+        --menu-item-font-size: var(--mv-menu-panel-item-font-size, 16px);
+        --menu-item-color: var(--mv-menu-panel-item-color, #FFFFFF);
+        --menu-item-height: var(--mv-menu-panel-item-height, 40px);
+        --menu-item-padding: var(--mv-menu-panel-item-padding, 20px);
+        --menu-background: var(--mv-menu-panel-background, linear-gradient(180deg, rgba(63, 71, 83, 1) 0%, rgba(26, 30, 35, 1) 100%));
+        --menu-shadow: var(--mv-menu-panel-shadow, 0 0 16px 1px rgba(151, 156, 163, 0.35));        
+        --selected-highlight: var(--mv-menu-panel-selected-highlight, rgba(26, 30, 35, 0.6));
+        --disabled-color: var(--mv-menu-panel-disabled-color, #898C91);
+        --hover-color: var(--mv-menu-panel-hover-color, #00D8FF);
+        --hover-background: var(--mv-menu-panel-hover-background, rgba(26, 30, 35, 0.4));
+        --group-icon-size: calc(var(--menu-item-font-size) * 0.3);
       }
 
       :host([group]:hover:not([disabled])), :host([item]:hover:not([disabled])) {        
@@ -40,15 +56,16 @@ export class MvMenuPanel extends LitElement {
 
       li {
         display: block;
-        text-indent: 20px;
+        text-indent: var(--menu-item-padding);
+        font-size: var(--menu-item-font-size);
       }
 
       li, li ::slotted(*) {
         margin: 0;
         text-decoration: none;
         list-style-type: none;
-        color: #FFFFFF;
-        line-height: 40px;
+        color: var(--menu-item-color);
+        line-height: var(--menu-item-height);
       }
 
       li ::slotted(a) {
@@ -56,47 +73,44 @@ export class MvMenuPanel extends LitElement {
       }
 
       li:hover:not(.disabled), li.open:not(.disabled) {
-        color: #00D8FF;
-        background-color: rgba(26, 30, 35, 0.4);
+        color: var(--hover-color);
+        background: var(--hover-background);
       }
 
-      li:hover:not(.disabled) ::slotted(*) {        
-        color: #00D8FF;
+      li:hover:not(.disabled) ::slotted(*) {
+        color: var(--hover-color);
       }
 
       li.selected, li.selected ::slotted(*) {
-        color: #00D8FF;
-        background-color: rgba(26, 30, 35, 0.6);
+        color: var(--hover-color);
+        background: var(--selected-highlight);
       }
 
       li.disabled, li.disabled ::slotted(*) {
-        color: #898C91;
+        color: var(--disabled-color);
         cursor: not-allowed;
       }
 
       .mv-menu-panel {
-        position: fixed;
         z-index: 100;
-        top: 0;
-        left: 0;
-        height: 100%;
-        width: 330px;
-        background: linear-gradient(180deg, rgba(63, 71, 83, 1) 0%, rgba(26, 30, 35, 1) 100%);
-        box-shadow: 0 0 16px 1px rgba(151, 156, 163, 0.35)
+        height: 100%;        
+        width: var(--menu-width);
+        background: var(--menu-background);
+        box-shadow: var(--menu-shadow);
       }
 
       .menu-panel-header {        
-        font-size: 25px;
-        color: #FFFFFF;
-        background: linear-gradient(45deg, rgba(232, 179, 56, 1) 0%, rgba(255, 150, 0, 1) 100%);
-        height: 66px;
+        font-size: var(--menu-header-font-size);
+        color: var(--menu-header-color);
+        background: var(--menu-header-background);
+        height: var(--menu-header-height);
         display: flex;
         align-items: center;
-        padding: 0 0 0 20px;
+        padding: 0 0 0 var(--menu-item-padding);
       }
 
       .menu-label-group {
-        width: calc(100% - 20px);
+        width: calc(100% - var(--menu-item-padding));
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -106,20 +120,21 @@ export class MvMenuPanel extends LitElement {
       .menu-label-group.open:not(.disabled) ::slotted(*),
       .menu-label-group:hover:not(.disabled) i,
       .menu-label-group.open:not(.disabled) i {
-        color: #00D8FF;        
+        color: var(--hover-color);        
       }
 
       .menu-panel-label {
         width: 100%;
-        line-height: 20px;
+        line-height: calc(var(--menu-item-font-size) * 1.2);
+        font-size: var(--menu-item-font-size);
       }
 
       .menu-group-dropdown-icon {
         position: relative;
-        width: 5px;
-        height: 5px;
-        border-top: 2px solid #DCDCDC;
-        border-right: 2px solid #DCDCDC;
+        width: var(--group-icon-size);
+        height: var(--group-icon-size);
+        border-top: 2px solid var(--menu-item-color);
+        border-right: 2px solid var(--menu-item-color);
         float: right;        
       }
 
@@ -138,7 +153,6 @@ export class MvMenuPanel extends LitElement {
         -webkit-transform: rotate(135deg);
         transform: rotate(135deg);
       }
-      
 		`;
   }
 
