@@ -28,16 +28,16 @@ export class MvMenuPanel extends LitElement {
         font-family: var(--font-family, Arial);
         user-select: none;
         --menu-width: var(--mv-menu-panel-width, 330px);
-        --menu-header-font-size: var(--mv-menu-panel-header-font-size, 24px);
+        --menu-header-font-size: var(--font-size-xl, 24px);
         --menu-header-height: var(--mv-menu-panel-header-height, 66px);
         --menu-header-color: var(--mv-menu-panel-header-color, #FFFFFF);
         --menu-header-background: var(--mv-menu-panel-header-background, linear-gradient(45deg, rgba(232, 179, 56, 1) 0%, rgba(255, 150, 0, 1) 100%));
-        --menu-item-font-size: var(--mv-menu-panel-item-font-size, 16px);
+        --menu-item-font-size: var(--font-size-m, 16px);
         --menu-item-color: var(--mv-menu-panel-item-color, #FFFFFF);
         --menu-item-height: var(--mv-menu-panel-item-height, 40px);
         --menu-item-padding: var(--mv-menu-panel-item-padding, 20px);
         --menu-background: var(--mv-menu-panel-background, linear-gradient(180deg, rgba(63, 71, 83, 1) 0%, rgba(26, 30, 35, 1) 100%));
-        --menu-shadow: var(--mv-menu-panel-shadow, 0 0 16px 1px rgba(151, 156, 163, 0.35));        
+        --menu-shadow: var(--mv-menu-panel-shadow, 0 0 16px 1px rgba(151, 156, 163, 0.35));
         --selected-highlight: var(--mv-menu-panel-selected-highlight, rgba(26, 30, 35, 0.6));
         --disabled-color: var(--mv-menu-panel-disabled-color, #898C91);
         --hover-color: var(--mv-menu-panel-hover-color, #00D8FF);
@@ -45,7 +45,7 @@ export class MvMenuPanel extends LitElement {
         --group-icon-size: calc(var(--menu-item-font-size) * 0.3);
       }
 
-      :host([group]:hover:not([disabled])), :host([item]:hover:not([disabled])) {        
+      :host([group]:hover:not([disabled])), :host([item]:hover:not([disabled])) {
         cursor: pointer;
       }
 
@@ -93,13 +93,13 @@ export class MvMenuPanel extends LitElement {
 
       .mv-menu-panel {
         z-index: 100;
-        height: 100%;        
+        height: 100%;
         width: var(--menu-width);
         background: var(--menu-background);
         box-shadow: var(--menu-shadow);
       }
 
-      .menu-panel-header {        
+      .menu-panel-header {
         font-size: var(--menu-header-font-size);
         color: var(--menu-header-color);
         background: var(--menu-header-background);
@@ -120,7 +120,7 @@ export class MvMenuPanel extends LitElement {
       .menu-label-group.open:not(.disabled) ::slotted(*),
       .menu-label-group:hover:not(.disabled) i,
       .menu-label-group.open:not(.disabled) i {
-        color: var(--hover-color);        
+        color: var(--hover-color);
       }
 
       .menu-panel-label {
@@ -135,13 +135,13 @@ export class MvMenuPanel extends LitElement {
         height: var(--group-icon-size);
         border-top: 2px solid var(--menu-item-color);
         border-right: 2px solid var(--menu-item-color);
-        float: right;        
+        float: right;
       }
 
       .menu-group-dropdown-icon.close {
         transition: -webkit-transform 0.3s;
         transition: transform 0.3s;
-        transition: transform 0.3s, -webkit-transform 0.3s;        
+        transition: transform 0.3s, -webkit-transform 0.3s;
         -webkit-transform: rotate(45deg);
         transform: rotate(45deg);
       }
@@ -149,7 +149,7 @@ export class MvMenuPanel extends LitElement {
       .menu-group-dropdown-icon.open {
         transition: -webkit-transform 0.3s;
         transition: transform 0.3s;
-        transition: transform 0.3s, -webkit-transform 0.3s;        
+        transition: transform 0.3s, -webkit-transform 0.3s;
         -webkit-transform: rotate(135deg);
         transform: rotate(135deg);
       }
@@ -193,7 +193,7 @@ export class MvMenuPanel extends LitElement {
                   <slot name="menu-panel-label"></slot>
                 </div>
                 `
-              : html``}            
+              : html``}
             <nav>
               <ul class="main">
                 <slot></slot>
