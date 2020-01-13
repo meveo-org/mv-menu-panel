@@ -179,12 +179,12 @@ export class MvMenuPanelDemo extends LitElement {
         item
         .value="${{
           value: "Any value to be passed to an action",
-          href: "https://github.com/meveo-frontend"
+          href: "https://github.com/meveo-org"
         }}"
         .selected="${this.selected === "link"}"
         @select-item="${this.handleLink}"
       >
-        <a href="https://github.com/meveo-frontend" target="_blank">
+        <a href="https://github.com/meveo-org" target="_blank">
           <mv-lnr icon="paperclip"></mv-lnr> Menu 2 - Link
         </a>
       </mv-menu-panel>
