@@ -54,4 +54,4 @@ To experiment with the MvMenuPanel component.
 </menu-panel>
 ```
 
-You can also check this [demo](https://manaty.net/mv-menu-panel/)
+You can also check this [demo](https://menupanel.meveo.org/)
