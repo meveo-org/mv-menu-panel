@@ -18,30 +18,42 @@ export class MvMenuPanel extends LitElement {
       custom: { type: Boolean, reflect: true, attribute: true },
 
       // TODO position values include: "top", "left", "right", "bottom", default: "left"
-      position: { type: String, attribute: true }
+      position: { type: String, attribute: true },
+
+      //  valid theme values are: "light", "dark"
+      //    default: "dark"
+      theme: { type: String, attribute: true }
     };
   }
 
   static get styles() {
     return css`
-			:host {
+	  :host {
         font-family: var(--font-family, Arial);
         user-select: none;
         --menu-width: var(--mv-menu-panel-width, 330px);
         --menu-header-font-size: var(--font-size-xl, 24px);
         --menu-header-height: var(--mv-menu-panel-header-height, 66px);
-        --menu-header-color: var(--mv-menu-panel-header-color, #FFFFFF);
-        --menu-header-background: var(--mv-menu-panel-header-background, linear-gradient(45deg, rgba(232, 179, 56, 1) 0%, rgba(255, 150, 0, 1) 100%));
+        --menu-header-dark-color: var(--mv-menu-panel-header-dark-color, #FFFFFF);
+        --menu-header-dark-background: var(--mv-menu-panel-header-dark-background, linear-gradient(45deg, rgba(232, 179, 56, 1) 0%, rgba(255, 150, 0, 1) 100%));
+        --menu-header-light-color: var(--mv-menu-panel-header-light-color, #80828C);
+        --menu-header-light-background: var(--mv-menu-panel-header-light-background, #F0FFF0);
         --menu-item-font-size: var(--font-size-m, 16px);
-        --menu-item-color: var(--mv-menu-panel-item-color, #FFFFFF);
+        --menu-item-dark-color: var(--mv-menu-panel-item-dark-color, #FFFFFF);
+        --menu-item-light-color: var(--mv-menu-panel-item-light-color, #FFFFFF);
         --menu-item-height: var(--mv-menu-panel-item-height, 40px);
         --menu-item-padding: var(--mv-menu-panel-item-padding, 20px);
-        --menu-background: var(--mv-menu-panel-background, linear-gradient(180deg, rgba(63, 71, 83, 1) 0%, rgba(26, 30, 35, 1) 100%));
         --menu-shadow: var(--mv-menu-panel-shadow, 0 0 16px 1px rgba(151, 156, 163, 0.35));
-        --selected-highlight: var(--mv-menu-panel-selected-highlight, rgba(26, 30, 35, 0.6));
-        --disabled-color: var(--mv-menu-panel-disabled-color, #898C91);
-        --hover-color: var(--mv-menu-panel-hover-color, #00D8FF);
-        --hover-background: var(--mv-menu-panel-hover-background, rgba(26, 30, 35, 0.4));
+        --menu-dark-background: var(--mv-menu-panel-dark-background, linear-gradient(180deg, rgba(63, 71, 83, 1) 0%, rgba(26, 30, 35, 1) 100%));
+        --selected-dark-highlight: var(--mv-menu-panel-selected-dark-highlight, rgba(26, 30, 35, 0.6));
+        --disabled-dark-color: var(--mv-menu-panel-disabled-dark-color, #898C91);
+        --hover-dark-color: var(--mv-menu-panel-hover-dark-color, #00D8FF);
+        --hover-dark-background: var(--mv-menu-panel-hover-dark-background, rgba(26, 30, 35, 0.4));
+        --menu-light-background: var(--mv-menu-panel-light-background, #CCCCCC);
+        --selected-light-highlight: var(--mv-menu-panel-selected-light-highlight, #4A6572);
+        --disabled-light-color: var(--mv-menu-panel-disabled-light-color, #898C91);
+        --hover-light-color: var(--mv-menu-panel-hover-light-color, #00D8FF);
+        --hover-light-background: var(--mv-menu-panel-hover-light-background, rgba(26, 30, 35, 0.4));
         --group-icon-size: calc(var(--menu-item-font-size) * 0.3);
       }
 
@@ -153,7 +165,29 @@ export class MvMenuPanel extends LitElement {
         -webkit-transform: rotate(135deg);
         transform: rotate(135deg);
       }
-		`;
+      
+      .dark {
+        --menu-header-color: var(--menu-header-dark-color);
+        --menu-header-background: var(--menu-header-dark-background);
+        --menu-item-color: var(--menu-item-dark-color);
+        --menu-background: var(--menu-dark-background);
+        --selected-highlight: var(--selected-dark-highlight);
+        --disabled-color: var(--disabled-dark-color);
+        --hover-color: var(--hover-dark-color);
+        --hover-background: var(--hover-dark-background);
+      }
+      
+      .light {
+        --menu-header-color: var(--menu-header-light-color);
+        --menu-header-background: var(--menu-header-light-background);
+        --menu-item-color: var(--menu-item-light-color);
+        --menu-background: var(--menu-light-background);
+        --selected-highlight: var(--selected-light-highlight);
+        --disabled-color: var(--disabled-light-color);
+        --hover-color: var(--hover-light-color);
+        --hover-background: var(--hover-light-background);
+      }
+	`;
   }
 
   constructor() {
@@ -162,6 +196,7 @@ export class MvMenuPanel extends LitElement {
     this.disabled = false;
     this.selected = false;
     this.custom = false;
+    this.theme = "dark";
   }
 
   render() {
@@ -183,7 +218,7 @@ export class MvMenuPanel extends LitElement {
     if (menu) {
       return open
         ? html`
-          <aside class="mv-menu-panel">
+          <aside class="mv-menu-panel ${this.theme}">
             ${!!showLabel
               ? html`
                 <div

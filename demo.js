@@ -18,7 +18,8 @@ export class MvMenuPanelDemo extends LitElement {
       title: { type: String, reflect: true },
       position: { type: String, reflect: true, attribute: false },
       selected: { type: String, reflect: true, attribute: false },
-      openLight: { type: Boolean, attribute: true }
+      openLight: { type: Boolean, attribute: true },
+      theme: { type: String, attribute: true }
     };
   }
 
@@ -80,6 +81,7 @@ export class MvMenuPanelDemo extends LitElement {
     this.title = "";
     this.selected = "";
     this.openLight = false;
+    this.theme = "dark";
   }
 
   render() {
@@ -97,7 +99,7 @@ export class MvMenuPanelDemo extends LitElement {
       .position="${position}"
       .value="${{ value: "This value is for the header." }}"
       @select-header="${this.handleHeaderClick}"
-      style="${this.openLight ? light : ""}"
+      .theme="${this.theme}"
     >
       <mv-menu-panel label><mv-lnr icon="home"></mv-lnr> Menu</mv-menu-panel>
 
@@ -269,6 +271,11 @@ export class MvMenuPanelDemo extends LitElement {
 
   toggleLightBulb = () => {
     this.openLight = !this.openLight;
+    if (this.openLight) {
+      this.theme = "light";
+    } else {
+      this.theme = "dark";
+    }
   };
 }
 
