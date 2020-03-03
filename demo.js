@@ -1,7 +1,6 @@
 import { LitElement, html, css } from "lit-element";
 import "mv-linear-icons";
 import "mv-toast";
-import "mv-font-awesome";
 import "./mv-menu-panel.js";
 
 const CONTENT_POSITION = {
@@ -18,7 +17,6 @@ export class MvMenuPanelDemo extends LitElement {
       title: { type: String, reflect: true },
       position: { type: String, reflect: true, attribute: false },
       selected: { type: String, reflect: true, attribute: false },
-      openLight: { type: Boolean, attribute: true },
       theme: { type: String, attribute: true }
     };
   }
@@ -59,15 +57,24 @@ export class MvMenuPanelDemo extends LitElement {
         align-items: center;
       }
       
-      mv-fa[icon="lightbulb"] {
-        font-size: 50px;
+      fieldset > label, label > input {
         cursor: pointer;
-        margin: 20px;
       }
       
-      .theme {
-        display: flex;
-        justify-content: flex-start;
+      fieldset {
+        width: 120px;
+        margin-left: 10px;
+        border:2px solid red;
+        -moz-border-radius:8px;
+        -webkit-border-radius:8px;	
+        border-radius:8px;
+        color: #818181;
+        margin-bottom: 30px;
+      }
+      
+      legend {
+        font-weight: 500;
+        color: red;
       }
     `;
   }
@@ -80,18 +87,12 @@ export class MvMenuPanelDemo extends LitElement {
     this.testValue = { value: "This can be any value" };
     this.title = "";
     this.selected = "";
-    this.openLight = false;
     this.theme = "dark";
   }
 
   render() {
     const { position, contentPosition } = this;
     const contentClass = `demo-content ${contentPosition}`;
-    const light =
-        "--mv-menu-panel-header-background: #F0FFF0;" +
-        "--mv-menu-panel-header-color: #80828C;" +
-        "--mv-menu-panel-background: #CCCCCC;" +
-        "--mv-menu-panel-selected-highlight: #4A6572;";
     return html`
     <mv-menu-panel
       menu
@@ -216,13 +217,15 @@ export class MvMenuPanelDemo extends LitElement {
     </mv-menu-panel>
     <div class="${contentClass}">
       <h1>Menu Panel Demo</h1>
-      <mv-toast type="information" .closeable="${false}">
+      <fieldset>
+        <legend>Theme</legend>
+        <label><input type="radio" name="theme" value="light" @change="${this.radioChange}" />Light</label>
+        <label><input type="radio" name="theme" value="dark" checked @change="${this.radioChange}" />Dark</label>
+      </fieldset>
+      <mv-toast type="information" .closeable="${false}" .theme="${this.theme}">
         <h3>${this.title}</h3>
         <pre>${this.message}</pre>
       </mv-toast>
-      <div class="theme">
-        <mv-fa icon="lightbulb" style="color: ${this.openLight ? "yellow" : ""}" @click=${this.toggleLightBulb}></mv-fa>
-      </div>
     </div>
     `;
   }
@@ -269,9 +272,9 @@ export class MvMenuPanelDemo extends LitElement {
     this.message = JSON.stringify(value, null, 2);
   }
 
-  toggleLightBulb = () => {
-    this.openLight = !this.openLight;
-    if (this.openLight) {
+  radioChange = originalEvent => {
+    const { target: { value } } = originalEvent;
+    if (value === "light") {
       this.theme = "light";
     } else {
       this.theme = "dark";
