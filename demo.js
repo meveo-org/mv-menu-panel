@@ -65,9 +65,9 @@ export class MvMenuPanelDemo extends LitElement {
         width: 120px;
         margin-left: 10px;
         border:2px solid red;
-        -moz-border-radius:8px;
-        -webkit-border-radius:8px;	
-        border-radius:8px;
+        -moz-border-radius: 8px;
+        -webkit-border-radius: 8px;	
+        border-radius: 8px;
         color: #818181;
         margin-bottom: 30px;
       }
@@ -93,6 +93,7 @@ export class MvMenuPanelDemo extends LitElement {
   render() {
     const { position, contentPosition } = this;
     const contentClass = `demo-content ${contentPosition}`;
+    const { theme } = this;
     return html`
     <mv-menu-panel
       menu
@@ -100,7 +101,7 @@ export class MvMenuPanelDemo extends LitElement {
       .position="${position}"
       .value="${{ value: "This value is for the header." }}"
       @select-header="${this.handleHeaderClick}"
-      .theme="${this.theme}"
+      .theme="${theme}"
     >
       <mv-menu-panel label><mv-lnr icon="home"></mv-lnr> Menu</mv-menu-panel>
 
@@ -219,10 +220,10 @@ export class MvMenuPanelDemo extends LitElement {
       <h1>Menu Panel Demo</h1>
       <fieldset>
         <legend>Theme</legend>
-        <label><input type="radio" name="theme" value="light" @change="${this.radioChange}" />Light</label>
-        <label><input type="radio" name="theme" value="dark" checked @change="${this.radioChange}" />Dark</label>
+        <label><input type="radio" name="theme" value="light" @change="${this.changeTheme}" />Light</label>
+        <label><input type="radio" name="theme" value="dark" checked @change="${this.changeTheme}" />Dark</label>
       </fieldset>
-      <mv-toast type="information" .closeable="${false}" .theme="${this.theme}">
+      <mv-toast type="information" .closeable="${false}" .theme="${theme}">
         <h3>${this.title}</h3>
         <pre>${this.message}</pre>
       </mv-toast>
@@ -272,13 +273,9 @@ export class MvMenuPanelDemo extends LitElement {
     this.message = JSON.stringify(value, null, 2);
   }
 
-  radioChange = originalEvent => {
+  changeTheme = originalEvent => {
     const { target: { value } } = originalEvent;
-    if (value === "light") {
-      this.theme = "light";
-    } else {
-      this.theme = "dark";
-    }
+    this.theme = value;
   };
 }
 
