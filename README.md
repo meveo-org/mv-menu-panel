@@ -38,6 +38,7 @@ To experiment with the MvMenuPanel component.
 
   <mv-menu-panel
     group                                                 // indicates that this is a menu group
+    popout                                                // indicates that the submenu will be displayed in a popout
     .value="${{ value: "This value is for Menu 1" }}"     // value returned when the group label is clicked
     @select-group="${this.handleGroupSelect}"             // custom event dispatched when the group label is clicked
   >

@@ -5,59 +5,111 @@ export class MvMenuPanel extends LitElement {
     return {
       // optional, this is the value that is returned when menu items are clicked
       value: { type: Object, attribute: false },
-      menu: { type: Boolean, attribute: true },
-      showLabel: { type: Boolean, attribute: true },
-      label: { type: Boolean, attribute: true },
-      group: { type: Boolean, attribute: true },
-      item: { type: Boolean, attribute: true },
-      open: { type: Boolean, reflect: true, attribute: true },
-      disabled: { type: Boolean, attribute: true },
-      selected: { type: Boolean, attribute: true },
+      menu: { type: Boolean },
+      showHeader: { type: Boolean, attribute: "show-header" },
+      label: { type: Boolean },
+      group: { type: Boolean },
+      popout: { type: Boolean },
+      item: { type: Boolean },
+      open: { type: Boolean },
+      disabled: { type: Boolean },
+      selected: { type: Boolean },
 
       //setting custom to true will bypass the default render and behavior of the group label and click action
-      custom: { type: Boolean, reflect: true, attribute: true },
+      custom: { type: Boolean },
 
       // TODO position values include: "top", "left", "right", "bottom", default: "left"
-      position: { type: String, attribute: true },
+      position: { type: String },
 
       //  valid theme values are: "light", "dark"
       //    default: "dark"
-      theme: { type: String, attribute: true }
+      theme: { type: String },
     };
   }
 
   static get styles() {
     return css`
-	  :host {
+      :host {
         font-family: var(--font-family, Arial);
         user-select: none;
         --menu-width: var(--mv-menu-panel-width, 330px);
+        --menu-collapse-width: var(--mv-menu-panel-collapse-width, 65px);
+
         --menu-header-font-size: var(--font-size-xl, 24px);
         --menu-header-height: var(--mv-menu-panel-header-height, 66px);
-        --menu-header-dark-color: var(--mv-menu-panel-header-dark-color, #FFFFFF);
-        --menu-header-dark-background: var(--mv-menu-panel-header-dark-background, linear-gradient(45deg, rgba(232, 179, 56, 1) 0%, rgba(255, 150, 0, 1) 100%));
-        --menu-header-light-color: var(--mv-menu-panel-header-light-color, #80828C);
-        --menu-header-light-background: var(--mv-menu-panel-header-light-background, #F0FFF0);
+
         --menu-item-font-size: var(--font-size-m, 16px);
-        --menu-item-dark-color: var(--mv-menu-panel-item-dark-color, #FFFFFF);
-        --menu-item-light-color: var(--mv-menu-panel-item-light-color, #FFFFFF);
         --menu-item-height: var(--mv-menu-panel-item-height, 40px);
         --menu-item-padding: var(--mv-menu-panel-item-padding, 20px);
-        --menu-shadow: var(--mv-menu-panel-shadow, 0 0 16px 1px rgba(151, 156, 163, 0.35));
-        --menu-dark-background: var(--mv-menu-panel-dark-background, linear-gradient(180deg, rgba(63, 71, 83, 1) 0%, rgba(26, 30, 35, 1) 100%));
-        --selected-dark-highlight: var(--mv-menu-panel-selected-dark-highlight, rgba(26, 30, 35, 0.6));
-        --disabled-dark-color: var(--mv-menu-panel-disabled-dark-color, #898C91);
-        --hover-dark-color: var(--mv-menu-panel-hover-dark-color, #00D8FF);
-        --hover-dark-background: var(--mv-menu-panel-hover-dark-background, rgba(26, 30, 35, 0.4));
-        --menu-light-background: var(--mv-menu-panel-light-background, #CCCCCC);
-        --selected-light-highlight: var(--mv-menu-panel-selected-light-highlight, #4A6572);
-        --disabled-light-color: var(--mv-menu-panel-disabled-light-color, #898C91);
-        --hover-light-color: var(--mv-menu-panel-hover-light-color, #00D8FF);
-        --hover-light-background: var(--mv-menu-panel-hover-light-background, rgba(26, 30, 35, 0.4));
+        --menu-shadow: var(
+          --mv-menu-panel-shadow,
+          0 0 16px 1px rgba(151, 156, 163, 0.35)
+        );
+
         --group-icon-size: calc(var(--menu-item-font-size) * 0.3);
+
+        --menu-header-dark-color: var(
+          --mv-menu-panel-header-dark-color,
+          #ffffff
+        );
+        --menu-header-dark-background: var(
+          --mv-menu-panel-header-dark-background,
+          linear-gradient(
+            45deg,
+            rgba(232, 179, 56, 1) 0%,
+            rgba(255, 150, 0, 1) 100%
+          )
+        );
+        --menu-item-dark-color: var(--mv-menu-panel-item-dark-color, #ffffff);
+        --menu-dark-background: var(
+          --mv-menu-panel-dark-background,
+          linear-gradient(
+            180deg,
+            rgba(63, 71, 83, 1) 0%,
+            rgba(26, 30, 35, 1) 100%
+          )
+        );
+        --selected-dark-highlight: var(
+          --mv-menu-panel-selected-dark-highlight,
+          rgba(26, 30, 35, 0.6)
+        );
+        --disabled-dark-color: var(
+          --mv-menu-panel-disabled-dark-color,
+          #898c91
+        );
+        --hover-dark-color: var(--mv-menu-panel-hover-dark-color, #00d8ff);
+        --hover-dark-background: var(
+          --mv-menu-panel-hover-dark-background,
+          rgba(26, 30, 35, 0.4)
+        );
+
+        --menu-header-light-color: var(
+          --mv-menu-panel-header-light-color,
+          #80828c
+        );
+        --menu-header-light-background: var(
+          --mv-menu-panel-header-light-background,
+          #f0fff0
+        );
+        --menu-item-light-color: var(--mv-menu-panel-item-light-color, #ffffff);
+        --menu-light-background: var(--mv-menu-panel-light-background, #cccccc);
+        --selected-light-highlight: var(
+          --mv-menu-panel-selected-light-highlight,
+          #4a6572
+        );
+        --disabled-light-color: var(
+          --mv-menu-panel-disabled-light-color,
+          #898c91
+        );
+        --hover-light-color: var(--mv-menu-panel-hover-light-color, #00d8ff);
+        --hover-light-background: var(
+          --mv-menu-panel-hover-light-background,
+          rgba(26, 30, 35, 0.4)
+        );
       }
 
-      :host([group]:hover:not([disabled])), :host([item]:hover:not([disabled])) {
+      :host([group]:hover:not([disabled])),
+      :host([item]:hover:not([disabled])) {
         cursor: pointer;
       }
 
@@ -72,7 +124,8 @@ export class MvMenuPanel extends LitElement {
         font-size: var(--menu-item-font-size);
       }
 
-      li, li ::slotted(*) {
+      li,
+      li ::slotted(*) {
         margin: 0;
         text-decoration: none;
         list-style-type: none;
@@ -84,7 +137,8 @@ export class MvMenuPanel extends LitElement {
         display: block;
       }
 
-      li:hover:not(.disabled), li.open:not(.disabled) {
+      li:hover:not(.disabled),
+      li.open:not(.disabled) {
         color: var(--hover-color);
         background: var(--hover-background);
       }
@@ -93,12 +147,14 @@ export class MvMenuPanel extends LitElement {
         color: var(--hover-color);
       }
 
-      li.selected, li.selected ::slotted(*) {
+      li.selected,
+      li.selected ::slotted(*) {
         color: var(--hover-color);
         background: var(--selected-highlight);
       }
 
-      li.disabled, li.disabled ::slotted(*) {
+      li.disabled,
+      li.disabled ::slotted(*) {
         color: var(--disabled-color);
         cursor: not-allowed;
       }
@@ -165,7 +221,17 @@ export class MvMenuPanel extends LitElement {
         -webkit-transform: rotate(135deg);
         transform: rotate(135deg);
       }
-      
+
+      .popout {
+        display: block;
+        position: absolute;
+        left: calc(var(--menu-width) + 2px);
+        margin-top: calc(var(--menu-item-height) * -1);
+        width: var(--menu-width);
+        background: var(--menu-background);
+        z-index: 1;
+      }
+
       .dark {
         --menu-header-color: var(--menu-header-dark-color);
         --menu-header-background: var(--menu-header-dark-background);
@@ -176,7 +242,7 @@ export class MvMenuPanel extends LitElement {
         --hover-color: var(--hover-dark-color);
         --hover-background: var(--hover-dark-background);
       }
-      
+
       .light {
         --menu-header-color: var(--menu-header-light-color);
         --menu-header-background: var(--menu-header-light-background);
@@ -187,12 +253,12 @@ export class MvMenuPanel extends LitElement {
         --hover-color: var(--hover-light-color);
         --hover-background: var(--hover-light-background);
       }
-	`;
+    `;
   }
 
   constructor() {
     super();
-    this.showLabel = false;
+    this.showHeader = false;
     this.disabled = false;
     this.selected = false;
     this.custom = false;
@@ -202,78 +268,78 @@ export class MvMenuPanel extends LitElement {
   render() {
     const {
       menu,
-      showLabel,
+      showHeader,
       label,
       group,
+      popout,
       item,
       open,
       disabled,
       selected,
-      custom
+      custom,
     } = this;
-    const openClass = open ? " open" : " close";
+    const openClass = open && !popout ? " open" : " close";
     const disabledClass = disabled ? " disabled" : "";
     const selectedClass = selected ? " selected" : "";
     const itemClass = `${disabledClass || selectedClass}`;
     if (menu) {
       return open
         ? html`
-          <aside class="mv-menu-panel ${this.theme}">
-            ${!!showLabel
-              ? html`
-                <div
-                  class="menu-panel-header"
-                  @click="${this.handleHeaderClick}"
-                >
-                  <slot name="menu-panel-label"></slot>
-                </div>
-                `
-              : html``}
-            <nav>
-              <ul class="main">
-                <slot></slot>
-              </ul>
-            </nav>
-          </aside>
+            <aside class="mv-menu-panel ${this.theme}">
+              ${!!showHeader
+                ? html`
+                    <div
+                      class="menu-panel-header"
+                      @click="${this.handleHeaderClick}"
+                    >
+                      <slot name="menu-panel-label"></slot>
+                    </div>
+                  `
+                : html``}
+              <nav>
+                <ul class="main">
+                  <slot></slot>
+                </ul>
+              </nav>
+            </aside>
           `
         : html``;
     } else if (label) {
       this.setAttribute("slot", "menu-panel-label");
-      return html`
-        <slot></slot>
-      `;
+      return html` <slot></slot> `;
     } else if (group) {
       return html`
-        <li
-          class="${openClass}${itemClass}"
-          @click="${this.handleOpenMenu}"
-        >
+        <li class="${openClass}${itemClass}" @click="${this.handleOpenMenu}">
           <div class="sub-menu${openClass}">
             <div class="menu-label-group${openClass}">
               <div class="menu-panel-label">
                 <slot name="menu-panel-label"></slot>
               </div>
               ${!custom
-                ? html`<i class="${`menu-group-dropdown-icon${openClass}`}"></i>`
+                ? html`
+                    <i class="${`menu-group-dropdown-icon${openClass}`}"></i>
+                  `
                 : html``}
             </div>
             ${open
               ? html`
-                  <ul>
-                    <slot></slot>
-                  </ul>
+                  <div class="group">
+                    <ul class="${popout ? " popout" : ""}">
+                      <slot></slot>
+                    </ul>
+                  </div>
                 `
               : html``}
-            </div>
+          </div>
         </li>
       `;
     } else if (item) {
       return html`
-      <li class="${itemClass}" @click="${this.handleItemClick}">
-        <div>
-          <slot></slot>
-        </div>
-      </li>
+        <li class="${itemClass}" @click="${this.handleItemClick}">
+          <div>
+            <slot></slot>
+          </div>
+        </li>
       `;
     }
     return html``;
@@ -284,7 +350,17 @@ export class MvMenuPanel extends LitElement {
     if (this.open === undefined && (this.group || this.menu)) {
       this.open = !this.group;
     }
+    if (this.popout) {
+      document.addEventListener("click", this.handleClickAway);
+    }
     super.connectedCallback();
+  }
+
+  detachedCallback() {
+    if (this.popout) {
+      document.removeEventListener("click", this.handleClickAway);
+    }
+    super.detachedCallback();
   }
 
   handleHeaderClick(originalEvent) {
@@ -296,8 +372,8 @@ export class MvMenuPanel extends LitElement {
 
   handleOpenMenu(originalEvent) {
     const { custom, open, value } = this;
+    originalEvent.stopPropagation();
     if (!custom) {
-      originalEvent.stopPropagation();
       this.open = !open;
     }
     this.dispatchEvent(
@@ -307,14 +383,41 @@ export class MvMenuPanel extends LitElement {
 
   handleItemClick(originalEvent) {
     const { value, disabled } = this;
+    originalEvent.stopPropagation();
     if (!!value && !disabled) {
       this.dispatchEvent(
         new CustomEvent("select-item", { detail: { value, originalEvent } })
       );
-    } else {
-      originalEvent.stopPropagation();
     }
   }
+
+  isInPath = (path, element) => {
+    return path.some((node) => node === element);
+  };
+
+  isInParentNode = (node, element) => {
+    if (!!node) {
+      return node === element || this.isInParentNode(node.parentNode, element);
+    }
+    return false;
+  };
+
+  handleClickAway = (event) => {
+    if (this.popout) {
+      const { path, originalTarget } = event;
+      const eventPath = path || event.composedPath();
+      let clickedAway = false;
+      if (!!eventPath) {
+        clickedAway = !this.isInPath(eventPath, this);
+      } else {
+        const root = this.shadowRoot.firstElementChild;
+        clickedAway = !this.isInParentNode(originalTarget, root);
+      }
+      if (clickedAway) {
+        this.open = !open;
+      }
+    }
+  };
 }
 
 customElements.define("mv-menu-panel", MvMenuPanel);
