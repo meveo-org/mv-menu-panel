@@ -230,6 +230,7 @@ export class MvMenuPanel extends LitElement {
         margin-top: calc(var(--menu-item-height) * -1);
         width: var(--popout-width);
         background: var(--menu-background);
+        border-radius: 5px;
         z-index: 1;
       }
 
