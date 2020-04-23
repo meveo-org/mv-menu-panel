@@ -23,7 +23,7 @@ To experiment with the MvMenuPanel component.
 ```html
 <mv-menu-panel
   menu                                                    // indicates that this is the main menu section
-  showLabel                                               // indicates that the menu header label is shown
+  show-header                                             // indicates that the menu header label is shown
   .value="${{ value: "This value is for the header." }}"  // the value that is returned when the header label is clicked
   @select-header="${this.handleHeaderClick}"              // custom event dispatched when the header label is clicked
 >
