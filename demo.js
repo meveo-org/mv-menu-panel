@@ -1,7 +1,6 @@
 import { LitElement, html, css } from "lit-element";
 import "mv-linear-icons";
 import "mv-toast";
-import "mv-font-awesome";
 import "./mv-menu-panel.js";
 
 export class MvMenuPanelDemo extends LitElement {
@@ -29,14 +28,6 @@ export class MvMenuPanelDemo extends LitElement {
         width: 100%;
         display: block;
         cursor: pointer;
-      }
-
-      .header {
-        width: calc(100% - 20px);
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        padding: 10px 10px 10px 0;
       }
 
       .demo-content {
@@ -103,11 +94,7 @@ export class MvMenuPanelDemo extends LitElement {
       >
         <mv-menu-panel label>
           <div class="header">
-            <mv-lnr icon="home"></mv-lnr>
-            <div>Menu</div>
-            <div @click="${this.collapseMenu}">
-              <mv-lnr icon="chevron-left"></mv-lnr>
-            </div>
+            <mv-lnr icon="home"></mv-lnr>Menu
           </div>
         </mv-menu-panel>
 
@@ -262,8 +249,6 @@ export class MvMenuPanelDemo extends LitElement {
       </div>
     `;
   }
-
-  collapseMenu = () => {};
 
   handleHeaderClick = (event) => {
     const {
