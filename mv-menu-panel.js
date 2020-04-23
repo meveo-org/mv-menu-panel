@@ -33,6 +33,7 @@ export class MvMenuPanel extends LitElement {
         font-family: var(--font-family, Arial);
         user-select: none;
         --menu-width: var(--mv-menu-panel-width, 330px);
+        --popout-width: var(--mv-menu-panel-popout-width, var(--menu-width));
         --menu-collapse-width: var(--mv-menu-panel-collapse-width, 65px);
 
         --menu-header-font-size: var(--font-size-xl, 24px);
@@ -227,7 +228,7 @@ export class MvMenuPanel extends LitElement {
         position: absolute;
         left: calc(var(--menu-width) + 2px);
         margin-top: calc(var(--menu-item-height) * -1);
-        width: var(--menu-width);
+        width: var(--popout-width);
         background: var(--menu-background);
         z-index: 1;
       }
