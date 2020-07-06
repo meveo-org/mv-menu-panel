@@ -149,7 +149,8 @@ export class MvMenuPanel extends LitElement {
       }
 
       li.selected,
-      li.selected ::slotted(*) {
+      li.selected div ::slotted(*),
+      li.selected .menu-label-group.open {
         color: var(--hover-color);
         background: var(--selected-highlight);
       }
@@ -179,7 +180,8 @@ export class MvMenuPanel extends LitElement {
       }
 
       .menu-label-group {
-        width: calc(100% - var(--menu-item-padding));
+        width: 100%;
+        height: var(--menu-item-height);
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -204,6 +206,7 @@ export class MvMenuPanel extends LitElement {
         height: var(--group-icon-size);
         border-top: 2px solid var(--menu-item-color);
         border-right: 2px solid var(--menu-item-color);
+        left: -20px;
         float: right;
       }
 
@@ -352,16 +355,12 @@ export class MvMenuPanel extends LitElement {
     if (this.open === undefined && (this.group || this.menu)) {
       this.open = !this.group;
     }
-    if (this.popout) {
-      document.addEventListener("click", this.handleClickAway);
-    }
+    document.addEventListener("click", this.handleClickAway);
     super.connectedCallback();
   }
 
   detachedCallback() {
-    if (this.popout) {
-      document.removeEventListener("click", this.handleClickAway);
-    }
+    document.removeEventListener("click", this.handleClickAway);
     super.detachedCallback();
   }
 
