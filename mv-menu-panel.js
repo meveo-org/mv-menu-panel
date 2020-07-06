@@ -415,7 +415,9 @@ export class MvMenuPanel extends LitElement {
         clickedAway = !this.isInParentNode(originalTarget, root);
       }
       if (clickedAway) {
-        this.open = !open;
+        this.open = false;
+        const { value, originalEvent } = this;
+        this.dispatchEvent(new CustomEvent("close-popout"));
       }
     }
   };
