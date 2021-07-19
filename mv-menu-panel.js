@@ -36,10 +36,10 @@ export class MvMenuPanel extends LitElement {
         --popout-width: var(--mv-menu-panel-popout-width, var(--menu-width));
         --menu-collapse-width: var(--mv-menu-panel-collapse-width, 65px);
 
-        --menu-header-font-size: var(--font-size-xl, 24px);
+        --menu-header-font-size: var(--font-size-xl, 1.375rem);
         --menu-header-height: var(--mv-menu-panel-header-height, 66px);
 
-        --menu-item-font-size: var(--font-size-m, 16px);
+        --menu-item-font-size: var(--font-size-m, 1rem);
         --menu-item-height: var(--mv-menu-panel-item-height, 40px);
         --menu-item-padding: var(--mv-menu-panel-item-padding, 20px);
         --menu-shadow: var(
