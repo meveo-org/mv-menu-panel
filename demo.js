@@ -1,6 +1,6 @@
-import { LitElement, html, css } from "lit-element";
-import "mv-linear-icons";
-import "mv-toast";
+import { LitElement, html, css } from "lit";
+import "@meveo-org/mv-linear-icons";
+import "@meveo-org/mv-toast";
 import "./mv-menu-panel.js";
 
 export class MvMenuPanelDemo extends LitElement {
